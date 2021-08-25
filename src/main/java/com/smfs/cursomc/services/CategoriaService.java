@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.smfs.cursomc.domain.Categoria;
+import com.smfs.cursomc.domain.Cliente;
 import com.smfs.cursomc.dto.CategoriaDTO;
 import com.smfs.cursomc.repositories.CategoriaRepository;
 import com.smfs.cursomc.services.exceptions.DataIntegrityException;
@@ -34,9 +35,12 @@ public class CategoriaService {
 	}
 	
 	public Categoria update(Categoria obj) {
-		find(obj.getId());
-		return repo.save(obj);
+		Categoria newObj = find(obj.getId());
+		updateDate(newObj, obj);
+		return repo.save(newObj);
 	}
+
+	
 
 	public void delete(Integer id) {
 		find(id);
@@ -58,6 +62,10 @@ public class CategoriaService {
 	
 	public Categoria fromDTO(CategoriaDTO objDto) {
 		return new Categoria(objDto.getId(), objDto.getNome());
+	}
+	
+	private void updateDate(Categoria newObj, Categoria obj) {
+		newObj.setNome(obj.getNome());
 	}
 	
 }
